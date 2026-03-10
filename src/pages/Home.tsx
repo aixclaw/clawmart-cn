@@ -1,9 +1,67 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Shield, Terminal, Code, Check, Store } from 'lucide-react';
-import { personas, skills, creators } from '../data/products';
+import { fetchProducts } from '../api';
 import ProductCard from '../components/ProductCard';
 
 export default function Home() {
+  const [personas, setPersonas] = useState<any[]>([]);
+  const [skills, setSkills] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // 加载热门角色（persona类型）
+        const personaData = await fetchProducts({ category: 'persona', limit: 6 });
+        setPersonas(personaData.products || []);
+        
+        // 加载热门技能（skill类型）
+        const skillData = await fetchProducts({ category: 'skill', limit: 6 });
+        setSkills(skillData.products || []);
+      } catch (err) {
+        console.error('加载首页数据失败', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // 模拟创作者数据
+  const creators = [
+    {
+      name: 'AI架构师',
+      avatar: '🧠',
+      title: '企业级AI解决方案专家',
+      description: '专注于企业级AI Agent架构设计，擅长复杂工作流编排。已发布20+企业级AI角色。'
+    },
+    {
+      name: '全栈开发者',
+      avatar: '👨‍💻',
+      title: '全栈开发工程师',
+      description: '技术栈覆盖前后端、DevOps，发布的技能全部经过生产环境验证。'
+    },
+    {
+      name: '营销专家',
+      avatar: '📈',
+      title: '数字营销顾问',
+      description: '10年营销经验，发布的内容创作、数据分析类技能广受好评。'
+    }
+  ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-neutral-400">加载中...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main>
       {/* Hero Section */}

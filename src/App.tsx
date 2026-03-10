@@ -3,6 +3,9 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Listings from './pages/Listings';
 import ListingDetail from './pages/ListingDetail';
+import Creators from './pages/Creators';
+import CreatorSubmit from './pages/CreatorSubmit';
+import Login from './pages/Login';
 import './index.css';
 
 function App() {
@@ -14,6 +17,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/listings/:id" element={<ListingDetail />} />
+          <Route path="/creators" element={<Creators />} />
+          <Route path="/creator/submit" element={<CreatorSubmit />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </BrowserRouter>
